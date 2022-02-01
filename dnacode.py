@@ -257,6 +257,6 @@ else:
             exit(-6)
         dna_code = convert_6bit_to_dna(input_message)
         if(args.binary):
-            print("{}".format(convert_dna_to_binary(dna_code).decode()))
+            print(convert_dna_to_binary(dna_code))
         else:
             print(dna_code)

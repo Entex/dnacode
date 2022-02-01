@@ -8,8 +8,7 @@ Python3.10 is required
 
 ## Usage
 ```
-usage: dnacode.py [-h] [-d] [-b] [--separator SEPARATOR] [--force]
-                  [message]
+usage: dnacode.py [-h] [-d] [-b] [--separator SEPARATOR] [--force] [--ascii] [--version] [message]
 
 DNA Code encoder/decoder
 
@@ -19,11 +18,11 @@ positional arguments:
 options:
   -h, --help            show this help message and exit
   -d                    Decode message instead of encode
-  -b                    Encode/decode from or to binary (auto detec in
-                        decode mode)
+  -b                    Encode/decode from or to binary (auto detec in decode mode)
   --separator SEPARATOR
                         Set separator, DEFAULT=' ' (space)
   --force               skip validation and try to force a result
+  --ascii               use extended ascii representation instead of 6-bit [a-zA-Z0-9 .]
   --version             show program's version number and exit
 ```
 
