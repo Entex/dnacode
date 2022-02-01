@@ -24,11 +24,18 @@ options:
 ```
 
 Example encoding:
+
 `python3 dnacode.py "Hello world"`
+
 output:
+
 `GAC ACA AGT AGT ATG TTG CCG ATG CAC AGT AAT"
 
+
 Example decoding:
+
 `python3 dnacode.py -d "GAC ACA AGT AGT ATG TTG CCG ATG CAC AGT AAT"`
+
 output:
+
 `Hello world`
