@@ -14,10 +14,12 @@ parser.add_argument("--force", dest="force", action="store_true", help="skip val
 parser.add_argument("message", nargs='?', type=str, help="Message used in encoding/decoding")
 parser.add_argument("message_stdin", nargs='?', type=argparse.FileType('r'), default=sys.stdin, help=argparse.SUPPRESS) 
 
+parser.add_argument('--version', action='version', version='DNA Code 1.0.0')
+
 args = parser.parse_args()
 
+# Force stupid stdin to work
 input_message = ""
-
 if not sys.stdin.isatty():
     input_message = "".join(args.message_stdin.read().splitlines())
 if not input_message or input_message == "":
