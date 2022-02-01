@@ -74,6 +74,7 @@ output:
 - G = 01
 - C = 10
 - T = 11
+
 To change the mapping of binary representation, use `--remap-agct` 
 this flag expect a binary number of length 8 where every 2 pair must be unique. For example `01101100`
 
