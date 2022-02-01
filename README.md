@@ -7,20 +7,23 @@ This is not a DNA/RNA Sequence translator of nucleotide to protein sequences or 
 
 ## Usage
 ```
-usage: dnacode [-h] [-a] [-d] [-b] [-s SEPARATOR] [--force] [--version] [message]
+usage: dnacode.py [-h] [-a] [-d] [-b] [-s SEPARATOR] [--remap-agct AGCT] [--remap-6bit MAP6BIT] [--force] [--version]
+                  [message]
 
 DNA Code encoder/decoder
 
 positional arguments:
   message               Message used in encoding/decoding
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -a, --ascii           use extended ascii representation instead of 6-bit [a-zA-Z0-9 .]
   -d, --decode          Decode message instead of encode
   -b, --binary          Encode/decode from or to binary (auto detect in decode mode)
   -s SEPARATOR, --separator SEPARATOR
                         Set separator, DEFAULT=' ' (space)
+  --remap-agct AGCT     Remap the binary representation of A, G, C and T. Example input 01101100
+  --remap-6bit MAP6BIT  Remap 6bit represenation with another characterset (64 characters)
   --force               skip validation and try to force a result
   --version             show program's version number and exit
 ```
