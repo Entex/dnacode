@@ -65,9 +65,33 @@ output:
 `wéird chäråçtërs ïñ âscîi #%&/()=@©£$|\[]}{`
 
 ## How it works
-The 6-bit conversion is similar to base64 but lowercase, UPPERCASE, digits, (space) and (dot). Source: CTF challanges
 
-The ascii conversion is based on a proposal for encoding ascii in DNA standard. I extended this to include the extended ascii table. Source: https://www.aleph.se/Trans/Individual/Body/ascii.html
+### binary representation
+- A = 00
+- G = 01
+- C = 10
+- T = 11
+
+### 6-bit
+The 6-bit conversion uses similar index table as base64 but lowercase, UPPERCASE, digits, (space) and (dot). Source: CTF challanges
+- a = AAA
+- b = AAC
+- c = AAG
+- d = AAT
+- e = ACA
+- etc...
+
+*FAQ: Why is it orderd in 00, 10, 01, 11 and not 00, 01, 10, 11? Good question, I have no idea. That just how the CTFs have worked...
+
+### Ascii
+The ascii conversion is based on a proposal for encoding ascii in DNA standard(see source for more information). 
+The idea is to convert the binary ascii representation of a character into 4 DNA characters (see binary representation above).
+The letters `DNA` will thus become
+```
+01000100 01001110 01000001
+ G A G A  G A T C  G A A G
+```
+I extended this to include the extended ascii table. Source: https://www.aleph.se/Trans/Individual/Body/ascii.html
 
 ## works with pipes as well
 ```bash
