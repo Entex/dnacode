@@ -14,7 +14,7 @@ positional arguments:
 options:
   -h, --help            show this help message and exit
   -d                    Decode message instead of encode
-  -b                    Encode/decode from or to binary (auto detec in decode mode)
+  -b                    Encode/decode from or to binary (auto detect in decode mode)
   --separator SEPARATOR
                         Set separator, DEFAULT=' ' (space)
   --force               skip validation and try to force a result
