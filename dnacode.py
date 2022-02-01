@@ -25,7 +25,7 @@ args = parser.parse_args()
 # Force stupid stdin to work
 input_message = ""
 if not sys.stdin.isatty():
-    input_message = "".join(args.message_stdin.read().splitlines())
+    input_message = "\n".join(args.message_stdin.read().splitlines())
 if not input_message or input_message == "":
     input_message = args.message
 if not input_message or input_message == "":
