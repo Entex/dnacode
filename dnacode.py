@@ -11,10 +11,12 @@ parser.add_argument("--separator", dest="separator", type=str, default=' ', help
 
 parser.add_argument("--force", dest="force", action="store_true", help="skip validation and try to force a result")
 
+parser.add_argument("--ascii", dest="ascii", action="store_true", help="use extended ascii representation instead of 6-bit [a-zA-Z0-9 .]")
+
 parser.add_argument("message", nargs='?', type=str, help="Message used in encoding/decoding")
 parser.add_argument("message_stdin", nargs='?', type=argparse.FileType('r'), default=sys.stdin, help=argparse.SUPPRESS) 
 
-parser.add_argument('--version', action='version', version='DNA Code 1.0.0')
+parser.add_argument('--version', action='version', version='DNA Code 1.1.0')
 
 args = parser.parse_args()
 
@@ -28,8 +30,8 @@ if not input_message or input_message == "":
     parser.print_help()
     exit(0)
 
-def binary_to_dna(binary):
-    dna = ""
+def convert_binary_to_dna(binary):
+    dna = ''
     for bc in [binary[i:i+2] for i in range(0, len(binary), 2)]:
         match bc:
             case '00': dna += 'A'
@@ -39,7 +41,7 @@ def binary_to_dna(binary):
             case _: exit(-3)
     return dna
 
-def dna_to_ascii(dna_code):
+def convert_dna_to_6bit(dna_code):
     message = ""
     for dc in [dna_code[i:i+3] for i in range(0, len(dna_code), 3)]:
         match dc:
@@ -109,7 +111,7 @@ def dna_to_ascii(dna_code):
             case 'TTT': message += '.'
     return message
 
-def ascii_to_dna(message):
+def convert_6bit_to_dna(message):
     dna_code = ""
     for char in message:
         match char:
@@ -180,7 +182,7 @@ def ascii_to_dna(message):
         if not (args.binary): dna_code += args.separator
     return dna_code.strip(args.separator)
 
-def dna_to_binary(dna_code):
+def convert_dna_to_binary(dna_code):
     binary = ''
     for i, char in enumerate(dna_code):
         match char:
@@ -188,11 +190,21 @@ def dna_to_binary(dna_code):
             case 'G': binary += '01'
             case 'C': binary += '10'
             case 'T': binary += '11'
-        if(i % 3 == 2): binary += args.separator
-    return binary.strip(args.separator)
+    return binary
+
+def convert_ascii_to_binary(message):
+    return ''.join([bin(ord(char))[2:].zfill(8) for char in input_message])
+
+def convert_binary_to_ascii(binary):
+    message = ''
+    for bc in [binary[i:i+8] for i in range(0, len(binary), 8)]:
+        message += chr(int(bc, 2))
+    return message
 
 if(args.decode):
     input_message = input_message.replace(args.separator, '')
+    
+    # Check if binary
     pattern = r'[01]'
     if(args.binary or re.search(pattern, input_message)):
         pattern=r'[^01]'
@@ -204,29 +216,48 @@ if(args.decode):
             # Invalid binary length
             sys.stderr.write("Invalid binary, odd number of digits: " + input_message)
             exit(-2)
-        else:
-            # decode binary to DNA code
-            input_message = binary_to_dna(input_message)
+        
+        # decode binary to DNA code
+        input_message = convert_binary_to_dna(input_message)
+
     pattern=r'[^ACGTacgt]'
     dna_code = input_message.replace(args.separator, '').upper()
     if(not args.force and re.search(pattern, dna_code)):
         # Invalid DNA code
         sys.stderr.write("Invalid DNA string: " + dna_code)
         exit(-4)
-    elif(not args.force and len(dna_code) % 3 != 0):
+    elif(not args.force and not args.ascii and len(dna_code) % 3 != 0):
         # Invalid DNA code length
-        sys.stderr.write("Invalid DNA string length: " + dna_code)
+        sys.stderr.write("Invalid DNA string: " + dna_code)
         exit(-5)
+    elif(not args.force and args.ascii and len(dna_code) % 4 != 0):
+        # Invalid DNA code length (ext-ascii)
+        sys.stderr.write("Invalid DNA string: " + dna_code)
+        exit(-8)
+    
+    if(args.ascii):
+        print(convert_binary_to_ascii(convert_dna_to_binary(dna_code)))
     else:
-        print(dna_to_ascii(dna_code))
+        print(convert_dna_to_6bit(dna_code))
 else:
-    pattern = r'[^a-zA-Z0-9 .]'
-    if(not args.force and re.search(pattern, input_message)):
-        # Invalid message
-        sys.stderr.write("Invalid message: May only contain [a-zA-Z0-9 .]")
-        exit(-6)
-    dna_code = ascii_to_dna(input_message)
-    if(args.binary):
-        print(dna_to_binary(dna_code))
+    if(args.ascii):
+        pattern = r'[^\x00-\xFF]'
+        if(not args.force and re.search(pattern, input_message)):
+            # Invalid characters
+            sys.stderr.write("Invalid message: May only contain extended ascii characters")
+            exit(-7)
+        if(args.binary):
+            print(convert_ascii_to_binary(input_message))
+        else:
+            print(convert_binary_to_dna(convert_ascii_to_binary(input_message)))
     else:
-        print(dna_code)
+        pattern = r'[^a-zA-Z0-9 .]'
+        if(not args.force and re.search(pattern, input_message)):
+            # Invalid characters
+            sys.stderr.write("Invalid message: May only contain [a-zA-Z0-9 .]")
+            exit(-6)
+        dna_code = convert_6bit_to_dna(input_message)
+        if(args.binary):
+            print("{}".format(convert_dna_to_binary(dna_code).decode()))
+        else:
+            print(dna_code)
