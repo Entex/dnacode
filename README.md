@@ -42,3 +42,7 @@ Example decoding:
 output:
 
 `Hello world`
+
+## Enable more characters
+By default dnacode uses a 6-bit representation of the DNA sequence. This allowes for 64 characters: a-z, A-Z, 0-9, (space) and (dot).
+To extend this to 8-bit use `--ascii` flag to enable extended ascii
