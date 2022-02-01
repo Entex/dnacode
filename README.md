@@ -4,21 +4,21 @@ Simple program to convert text to a DNA string and vice versa.
 
 ## Usage
 ```
-usage: dnacode.py [-h] [-d] [-b] [--separator SEPARATOR] [--force] [--ascii] [--version] [message]
+usage: dnacode [-h] [-a] [-d] [-b] [-s SEPARATOR] [--force] [--version] [message]
 
 DNA Code encoder/decoder
 
 positional arguments:
   message               Message used in encoding/decoding
 
-options:
+optional arguments:
   -h, --help            show this help message and exit
-  -d                    Decode message instead of encode
-  -b                    Encode/decode from or to binary (auto detect in decode mode)
-  --separator SEPARATOR
+  -a, --ascii           use extended ascii representation instead of 6-bit [a-zA-Z0-9 .]
+  -d, --decode          Decode message instead of encode
+  -b, --binary          Encode/decode from or to binary (auto detect in decode mode)
+  -s SEPARATOR, --separator SEPARATOR
                         Set separator, DEFAULT=' ' (space)
   --force               skip validation and try to force a result
-  --ascii               use extended ascii representation instead of 6-bit [a-zA-Z0-9 .]
   --version             show program's version number and exit
 ```
 
