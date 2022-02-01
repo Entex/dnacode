@@ -5,11 +5,14 @@ import sys
 
 parser = argparse.ArgumentParser(description="DNA Code encoder/decoder")
 
-
 parser.add_argument("-a", "--ascii", dest="ascii", action="store_true", help="use extended ascii representation instead of 6-bit [a-zA-Z0-9 .]")
 parser.add_argument("-d", "--decode", dest="decode", action="store_true", help="Decode message instead of encode")
 parser.add_argument("-b", "--binary", dest="binary", action="store_true", help="Encode/decode from or to binary (auto detect in decode mode)")
 parser.add_argument("-s", "--separator", dest="separator", type=str, default=' ', help="Set separator, DEFAULT=' ' (space)")
+
+parser.add_argument("--remap-agct", dest="agct", type=str, help="Remap the binary representation of A, G, C and T. Example input 01101100")
+parser.add_argument("--remap-6bit", dest="map6bit", type=str, help="Remap 6bit represenation with another characterset (64 characters)")
+
 parser.add_argument("--force", dest="force", action="store_true", help="skip validation and try to force a result")
 
 parser.add_argument("message", nargs='?', type=str, help="Message used in encoding/decoding")
@@ -94,6 +97,32 @@ def convert_ascii_to_binary(message):
 
 def convert_binary_to_ascii(binary):
     return ''.join([chr(int(binary[i:i+8], 2)) for i in range(0, len(binary), 8)])
+
+if(args.agct):
+    # Check length of new binary representation
+    if not(len(args.agct) == 8):
+        sys.stderr.write("Incorrect length of binary representation of AGCT: " + args.agct)
+        exit(-9)
+
+    # Check if new binary representation is valid
+    pattern = r'[01]'
+    if not(re.search(pattern, args.agct)):
+        sys.stderr.write("Invalid binary representation of AGCT: " + args.agct)
+        exit(-10)
+
+    # Check that every combination is unique
+    for i,b in enumerate([args.agct[i:i+2] for i in range(0, len(args.agct), 2)]):
+        if(i % 4 == 0): mapping_dna_to_binary['A'] = b
+        elif(i % 4 == 1): mapping_dna_to_binary['G'] = b
+        elif(i % 4 == 2): mapping_dna_to_binary['C'] = b
+        elif(i % 4 == 3): mapping_dna_to_binary['T'] = b
+
+if(args.map6bit):
+    if not(len(args.map6bit) == 64):
+        sys.stderr.write("Invalid characterset for 6-bit representation. Expected 64 characters, got " + str(len(args.map6bit)))
+        exit(-11)
+    for i, key in enumerate(mapping_dna_to_6bit):
+        mapping_dna_to_6bit[key] = args.map6bit[i]
 
 if(args.decode):
     input_message = input_message.replace(args.separator, '')
