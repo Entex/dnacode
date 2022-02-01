@@ -69,14 +69,16 @@ output:
 
 ## How it works
 
-### binary representation
+### binary representation (by default)
 - A = 00
 - G = 01
 - C = 10
 - T = 11
+To change the mapping of binary representation, use `--remap-agct` 
+this flag expect a binary number of length 8 where every 2 pair must be unique. For example `01101100`
 
 ### 6-bit
-The 6-bit conversion uses similar index table as base64 but lowercase, UPPERCASE, digits, (space) and (dot). Source: CTF challanges
+The 6-bit conversion by default uses similar index table as base64 but lowercase, UPPERCASE, digits, (space) and (dot). Source: CTF challanges
 - a = AAA
 - b = AAC
 - c = AAG
