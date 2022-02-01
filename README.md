@@ -47,9 +47,10 @@ output:
 ## Enable more characters
 By default dnacode uses a 6-bit representation of the DNA sequence. 
 
-This allows for 64 characters: a-z, A-Z, 0-9, (space) and (dot).
+This allows for 64 characters, by default: a-z, A-Z, 0-9, (space) and (dot).
+To change the mapping use `--remap-6bit` this flag expects 64 characters.
 
-To extend this to 8-bit use `--ascii` flag to enable extended ascii
+To extend the number of characters to 8-bit use `--ascii` flag to enable extended ascii. *Note, remap 6bit does not work with ascii.
 
 Example encoding:
 
