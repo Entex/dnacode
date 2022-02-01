@@ -38,7 +38,6 @@ def convert_binary_to_dna(binary):
             case '01': dna += 'G'
             case '10': dna += 'C'
             case '11': dna += 'T'
-            case _: exit(-3)
     return dna
 
 def convert_dna_to_6bit(dna_code):
