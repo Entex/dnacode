@@ -21,6 +21,7 @@ options:
   --separator SEPARATOR
                         Set separator, DEFAULT=' ' (space)
   --force               skip validation and try to force a result
+  --version             show program's version number and exit
 ```
 
 Example encoding:
