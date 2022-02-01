@@ -5,13 +5,12 @@ import sys
 
 parser = argparse.ArgumentParser(description="DNA Code encoder/decoder")
 
-parser.add_argument("-d", dest="decode", action="store_true", help="Decode message instead of encode")
-parser.add_argument("-b", dest="binary", action="store_true", help="Encode/decode from or to binary (auto detect in decode mode)")
-parser.add_argument("--separator", dest="separator", type=str, default=' ', help="Set separator, DEFAULT=' ' (space)")
 
+parser.add_argument("-a", "--ascii", dest="ascii", action="store_true", help="use extended ascii representation instead of 6-bit [a-zA-Z0-9 .]")
+parser.add_argument("-d", "--decode", dest="decode", action="store_true", help="Decode message instead of encode")
+parser.add_argument("-b", "--binary", dest="binary", action="store_true", help="Encode/decode from or to binary (auto detect in decode mode)")
+parser.add_argument("-s", "--separator", dest="separator", type=str, default=' ', help="Set separator, DEFAULT=' ' (space)")
 parser.add_argument("--force", dest="force", action="store_true", help="skip validation and try to force a result")
-
-parser.add_argument("--ascii", dest="ascii", action="store_true", help="use extended ascii representation instead of 6-bit [a-zA-Z0-9 .]")
 
 parser.add_argument("message", nargs='?', type=str, help="Message used in encoding/decoding")
 parser.add_argument("message_stdin", nargs='?', type=argparse.FileType('r'), default=sys.stdin, help=argparse.SUPPRESS) 
