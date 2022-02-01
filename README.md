@@ -1,6 +1,6 @@
 # DNA Code
 
-Simple program to convert ascii to a DNA string and vice versa.
+Simple program to convert text to a DNA string and vice versa.
 
 ## Prerequisite
 
