@@ -110,19 +110,37 @@ if(args.agct):
         sys.stderr.write("Invalid binary representation of AGCT: " + args.agct)
         exit(-10)
 
-    # Check that every combination is unique
+    # Update mapping
     for i,b in enumerate([args.agct[i:i+2] for i in range(0, len(args.agct), 2)]):
         if(i % 4 == 0): mapping_dna_to_binary['A'] = b
         elif(i % 4 == 1): mapping_dna_to_binary['G'] = b
         elif(i % 4 == 2): mapping_dna_to_binary['C'] = b
         elif(i % 4 == 3): mapping_dna_to_binary['T'] = b
 
+    # Check for duplicated values
+    tmp = {}
+    for key, value in mapping_dna_to_binary.items():
+        tmp.setdefault(value, set()).add(key)
+    duplicated_values = [k for k, v in tmp.items() if len(v) > 1]
+    if not(duplicated_values == []):
+        sys.stderr.write("Invalid AGCT, found duplicated value(s): " + ', '.join(duplicated_values))
+        exit(-11)
+
 if(args.map6bit):
     if not(len(args.map6bit) == 64):
         sys.stderr.write("Invalid characterset for 6-bit representation. Expected 64 characters, got " + str(len(args.map6bit)))
-        exit(-11)
+        exit(-12)
     for i, key in enumerate(mapping_dna_to_6bit):
         mapping_dna_to_6bit[key] = args.map6bit[i]
+
+    tmp = {}
+    for key, value in mapping_dna_to_6bit.items():
+        tmp.setdefault(value, set()).add(key)
+    duplicated_values = [k for k, v in tmp.items() if len(v) > 1]
+    if not(duplicated_values == []):
+        sys.stderr.write("Invalid characterset for 6bit, found duplicated value(s): " + ', '.join(duplicated_values))
+        exit(-13)
+
 
 if(args.decode):
     input_message = input_message.replace(args.separator, '')
