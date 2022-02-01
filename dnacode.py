@@ -56,25 +56,37 @@ def dict_get_key(dictionary, value):
 def convert_dna_to_binary(dna_code):
     binary = []
     for char in dna_code:
-        binary.append(mapping_dna_to_binary[char])
+        try:
+            binary.append(mapping_dna_to_binary[char])
+        except:
+            pass
     return ''.join(binary)
 
 def convert_binary_to_dna(binary):
     dna = []
     for bc in [binary[i:i+2] for i in range(0, len(binary), 2)]:
-        dna.append(dict_get_key(mapping_dna_to_binary, bc))
+        try:
+            dna.append(dict_get_key(mapping_dna_to_binary, bc))
+        except:
+            pass
     return ''.join(dna)
 
 def convert_dna_to_6bit(dna_code):
     message = []
     for dc in [dna_code[i:i+3] for i in range(0, len(dna_code), 3)]:
-        message.append(mapping_dna_to_6bit[dc])
+        try:
+            message.append(mapping_dna_to_6bit[dc])
+        except:
+            pass
     return ''.join(message)
 
 def convert_6bit_to_dna(message):
     dna_code = []
     for char in message:
-        dna_code.append(dict_get_key(mapping_dna_to_6bit, char))
+        try:
+            dna_code.append(dict_get_key(mapping_dna_to_6bit, char))
+        except:
+            pass
     return ''.join(dna_code)
 
 def convert_ascii_to_binary(message):
