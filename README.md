@@ -2,10 +2,6 @@
 
 Simple program to convert text to a DNA string and vice versa.
 
-## Prerequisite
-
-Python3.10 is required
-
 ## Usage
 ```
 usage: dnacode.py [-h] [-d] [-b] [--separator SEPARATOR] [--force] [--ascii] [--version] [message]
