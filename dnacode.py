@@ -43,27 +43,6 @@ mapping_dna_to_6bit = {
     'TTA': '9', 'TTC': '0', 'TTG': ' ', 'TTT': '.'
 }
 
-mapping_6bit_to_dna = {
-    'a': 'AAA', 'b': 'AAC', 'c': 'AAG', 'd': 'AAT', 'e': 'ACA', 'f': 'ACC',
-    'g': 'ACG', 'h': 'ACT', 'i': 'AGA', 'j': 'AGC', 'k': 'AGG', 'l': 'AGT',
-    'm': 'ATA', 'n': 'ATC', 'o': 'ATG', 'p': 'ATT', 'q': 'CAA', 'r': 'CAC',
-    's': 'CAG', 't': 'CAT', 'u': 'CCA', 'v': 'CCC', 'w': 'CCG', 'x': 'CCT',
-    'y': 'CGA', 'z': 'CGC', 'A': 'CGG', 'B': 'CGT', 'C': 'CTA', 'D': 'CTC',
-    'E': 'CTG', 'F': 'CTT', 'G': 'GAA', 'H': 'GAC', 'I': 'GAG', 'J': 'GAT',
-    'K': 'GCA', 'L': 'GCC', 'M': 'GCG', 'N': 'GCT', 'O': 'GGA', 'P': 'GGC',
-    'Q': 'GGG', 'R': 'GGT', 'S': 'GTA', 'T': 'GTC', 'U': 'GTG', 'V': 'GTT',
-    'W': 'TAA', 'X': 'TAC', 'Y': 'TAG', 'Z': 'TAT', '1': 'TCA', '2': 'TCC',
-    '3': 'TCG', '4': 'TCT', '5': 'TGA', '6': 'TGC', '7': 'TGG', '8': 'TGT',
-    '9': 'TTA', '0': 'TTC', ' ': 'TTG', '.': 'TTT'
-}
-
-mapping_binary_to_dna = {
-    '00': 'A',
-    '01': 'G',
-    '10': 'C',
-    '11': 'T'
-}
-
 mapping_dna_to_binary = {
     'A': '00',
     'G': '01',
@@ -71,10 +50,13 @@ mapping_dna_to_binary = {
     'T': '11'
 }
 
+def dict_get_key(dictionary, value):
+    return list(dictionary.keys())[list(dictionary.values()).index(value)]
+
 def convert_binary_to_dna(binary):
     dna = []
     for bc in [binary[i:i+2] for i in range(0, len(binary), 2)]:
-        dna.append(mapping_binary_to_dna[bc])
+        dna.append(dict_get_key(mapping_dna_to_binary, bc))
     return ''.join(dna)
 
 def convert_dna_to_binary(dna_code):
@@ -92,7 +74,7 @@ def convert_dna_to_6bit(dna_code):
 def convert_6bit_to_dna(message):
     dna_code = []
     for char in message:
-        dna_code.append(mapping_6bit_to_dna[char])
+        dna_code.append(dict_get_key(mapping_dna_to_6bit, char))
     return ''.join(dna_code)
 
 def convert_ascii_to_binary(message):
