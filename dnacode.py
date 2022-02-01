@@ -248,7 +248,11 @@ else:
         if(args.binary):
             print(convert_ascii_to_binary(input_message))
         else:
-            print(convert_binary_to_dna(convert_ascii_to_binary(input_message)))
+            binary = convert_ascii_to_binary(input_message)
+            dna = convert_binary_to_dna(binary)
+            dna_with_separator = args.separator.join([dna[i:i+4] for i in range(0, len(dna), 4)])
+            
+            print(dna_with_separator)
     else:
         pattern = r'[^a-zA-Z0-9 .]'
         if(not args.force and re.search(pattern, input_message)):
