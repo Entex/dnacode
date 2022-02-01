@@ -45,3 +45,18 @@ By default dnacode uses a 6-bit representation of the DNA sequence.
 This allowes for 64 characters: a-z, A-Z, 0-9, (space) and (dot).
 
 To extend this to 8-bit use `--ascii` flag to enable extended ascii
+
+Example encoding:
+
+`python3 dnacode.py --ascii "wéird chäråçtërs ïñ âscîi #%&/()=@©£$|\[]}{"`
+
+output:
+
+`GTGT TCCG GCCG GTAC GCGA ACAA GCAT GCCA TCGA GTAC TCGG TCGT GTGA TCCT GTAC GTAT ACAA TCTT TTAG ACAA TCAC GTAT GCAT TCTC GCCG ACAA ACAT ACGG ACGC ACTT ACCA ACCG ATTG GAAA CCCG CCAT ACGA GTTA GGTA GGCT GGTG GTTG GTCT`
+
+Example decoding:
+
+`python3 dnacode.py --ascii -d "GTGT TCCG GCCG GTAC GCGA ACAA GCAT GCCA TCGA GTAC TCGG TCGT GTGA TCCT GTAC GTAT ACAA TCTT TTAG ACAA TCAC GTAT GCAT TCTC GCCG ACAA ACAT ACGG ACGC ACTT ACCA ACCG ATTG GAAA CCCG CCAT ACGA GTTA GGTA GGCT GGTG GTTG GTCT"`
+
+output:
+`wéird chäråçtërs ïñ âscîi #%&/()=@©£$|\[]}{`
