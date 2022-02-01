@@ -62,7 +62,7 @@ output:
 `wéird chäråçtërs ïñ âscîi #%&/()=@©£$|\[]}{`
 
 ## How it works
-The 6-bit conversion is similar to base64 but lowercase, UPPERCASE, digits, (space) and (dot).
+The 6-bit conversion is similar to base64 but lowercase, UPPERCASE, digits, (space) and (dot). Source: CTF challanges
 
 The ascii conversion is based on a proposal for encoding ascii in DNA standard. I extended this to include the extended ascii table. Source: https://www.aleph.se/Trans/Individual/Body/ascii.html
 
