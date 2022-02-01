@@ -1,6 +1,9 @@
 # DNA Code
 
-Simple program to convert text to a DNA string and vice versa.
+Simple program to encode text to a DNA string and vice versa.
+
+## Disclaimer
+This is not a DNA/RNA Sequence translator of nucleotide to protein sequences or any of the sorts. This program only encodes (and decodes) text into DNA-like sequences.
 
 ## Usage
 ```
