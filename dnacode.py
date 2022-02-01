@@ -6,7 +6,7 @@ import sys
 parser = argparse.ArgumentParser(description="DNA Code encoder/decoder")
 
 parser.add_argument("-d", dest="decode", action="store_true", help="Decode message instead of encode")
-parser.add_argument("-b", dest="binary", action="store_true", help="Encode/decode from or to binary (auto detec in decode mode)")
+parser.add_argument("-b", dest="binary", action="store_true", help="Encode/decode from or to binary (auto detect in decode mode)")
 parser.add_argument("--separator", dest="separator", type=str, default=' ', help="Set separator, DEFAULT=' ' (space)")
 
 parser.add_argument("--force", dest="force", action="store_true", help="skip validation and try to force a result")
