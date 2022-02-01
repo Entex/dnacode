@@ -249,7 +249,7 @@ else:
         pattern = r'[^a-zA-Z0-9 .]'
         if(not args.force and re.search(pattern, input_message)):
             # Invalid characters
-            sys.stderr.write("Invalid message: May only contain [a-zA-Z0-9 .]")
+            sys.stderr.write("Invalid message: May only contain [a-zA-Z0-9 .], use --ascii if you need more characters")
             exit(-6)
         dna_code = convert_6bit_to_dna(input_message)
         if(args.binary):
