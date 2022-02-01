@@ -10,8 +10,8 @@ parser.add_argument("-d", "--decode", dest="decode", action="store_true", help="
 parser.add_argument("-b", "--binary", dest="binary", action="store_true", help="Encode/decode from or to binary (auto detect in decode mode)")
 parser.add_argument("-s", "--separator", dest="separator", type=str, default=' ', help="Set separator, DEFAULT=' ' (space)")
 
-parser.add_argument("--remap-agct", dest="agct", type=str, help="Remap the binary representation of A, G, C and T. Example input 01101100")
-parser.add_argument("--remap-6bit", dest="map6bit", type=str, help="Remap 6bit represenation with another characterset (64 characters)")
+parser.add_argument("--remap-agct", dest="agct", type=str, help="Remap the binary representation of A, G, C and T. Example input 01101100. (only works with -b)")
+parser.add_argument("--remap-6bit", dest="map6bit", type=str, help="Remap 6bit represenation with another characterset (64 characters). (only works with 6bit)")
 
 parser.add_argument("--force", dest="force", action="store_true", help="skip validation and try to force a result")
 
