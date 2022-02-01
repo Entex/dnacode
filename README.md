@@ -61,6 +61,11 @@ Example decoding:
 output:
 `wéird chäråçtërs ïñ âscîi #%&/()=@©£$|\[]}{`
 
+## How it works
+The 6-bit conversion is similar to base64 but lowercase, UPPERCASE, digits, (space) and (dot).
+
+The ascii conversion is based on a proposal for encoding ascii in DNA standard. I extended this to include the extended ascii table. Source: https://www.aleph.se/Trans/Individual/Body/ascii.html
+
 ## works with pipes as well
 ```bash
 echo "Hello pipes" > test.txt
