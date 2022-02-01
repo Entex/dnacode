@@ -29,7 +29,7 @@ Example encoding:
 
 output:
 
-`GAC ACA AGT AGT ATG TTG CCG ATG CAC AGT AAT"`
+`GAC ACA AGT AGT ATG TTG CCG ATG CAC AGT AAT`
 
 
 Example decoding:
