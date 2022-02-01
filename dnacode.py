@@ -205,10 +205,10 @@ else:
     else:
 
         #Check if message contains bad characters
-        pattern = r'[^a-zA-Z0-9 .]'
+        pattern = '[^' + re.escape(args.map6bit) + ']' if args.map6bit else r'[^a-zA-Z0-9 .]'
         if(not args.force and re.search(pattern, input_message)):
             # Invalid characters
-            sys.stderr.write("Invalid message: May only contain [a-zA-Z0-9 .], use --ascii if you need more characters")
+            sys.stderr.write("Invalid message: May only contain " + pattern +  ", use --ascii if you need more characters")
             exit(-6)
 
         # Encode and print
