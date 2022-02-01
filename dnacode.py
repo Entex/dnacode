@@ -53,17 +53,17 @@ mapping_dna_to_binary = {
 def dict_get_key(dictionary, value):
     return list(dictionary.keys())[list(dictionary.values()).index(value)]
 
-def convert_binary_to_dna(binary):
-    dna = []
-    for bc in [binary[i:i+2] for i in range(0, len(binary), 2)]:
-        dna.append(dict_get_key(mapping_dna_to_binary, bc))
-    return ''.join(dna)
-
 def convert_dna_to_binary(dna_code):
     binary = []
     for char in dna_code:
         binary.append(mapping_dna_to_binary[char])
     return ''.join(binary)
+
+def convert_binary_to_dna(binary):
+    dna = []
+    for bc in [binary[i:i+2] for i in range(0, len(binary), 2)]:
+        dna.append(dict_get_key(mapping_dna_to_binary, bc))
+    return ''.join(dna)
 
 def convert_dna_to_6bit(dna_code):
     message = []
