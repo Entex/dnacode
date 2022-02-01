@@ -60,3 +60,12 @@ Example decoding:
 
 output:
 `wéird chäråçtërs ïñ âscîi #%&/()=@©£$|\[]}{`
+
+## works with pipes as well
+```bash
+echo "Hello pipes" > test.txt
+cat test.txt | python3 dnacode.py | python3 dnacode.py -d
+
+output:
+Hello pipes
+```
