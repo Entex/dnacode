@@ -187,7 +187,7 @@ def convert_dna_to_binary(dna_code):
     return binary
 
 def convert_ascii_to_binary(message):
-    return ''.join([bin(ord(char))[2:].zfill(8) for char in input_message])
+    return ''.join([bin(ord(char))[2:].zfill(8) for char in message])
 
 def convert_binary_to_ascii(binary):
     return ''.join([chr(int(binary[i:i+8], 2)) for i in range(0, len(binary), 8)])
