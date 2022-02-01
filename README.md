@@ -1,7 +1,10 @@
 # DNA Code
 
-## Description
 Simple program to convert ascii to a DNA string and vice versa.
+
+## Prerequisite
+
+Python3.10 is required
 
 ## Usage
 ```
