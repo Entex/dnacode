@@ -3,7 +3,7 @@
 Simple program to convert text to a DNA string and vice versa.
 
 ## Usage
-```bash
+```
 usage: dnacode.py [-h] [-d] [-b] [--separator SEPARATOR] [--force] [--ascii] [--version] [message]
 
 DNA Code encoder/decoder
