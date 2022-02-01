@@ -92,8 +92,8 @@ def convert_6bit_to_dna(message):
             pass
     return ''.join(dna_code)
 
-def convert_ascii_to_binary(message):
-    return ''.join([bin(ord(char))[2:].zfill(8) for char in message])
+def convert_ascii_to_binary(message, separator):
+    return separator.join([bin(ord(char))[2:].zfill(8) for char in message])
 
 def convert_binary_to_ascii(binary):
     return ''.join([chr(int(binary[i:i+8], 2)) for i in range(0, len(binary), 8)])
@@ -194,10 +194,10 @@ else:
             sys.stderr.write("Invalid message: May only contain extended ascii characters")
             exit(-7)
         if(args.binary):
-            print(convert_ascii_to_binary(input_message))
+            print(convert_ascii_to_binary(input_message, args.separator))
         else:
             # Encode and print
-            binary = convert_ascii_to_binary(input_message)
+            binary = convert_ascii_to_binary(input_message, '')
             dna = convert_binary_to_dna(binary)
             dna_with_separator = args.separator.join([dna[i:i+4] for i in range(0, len(dna), 4)])
 
@@ -214,7 +214,8 @@ else:
         # Encode and print
         dna_code = convert_6bit_to_dna(input_message)
         if(args.binary):
-            print(convert_dna_to_binary(dna_code))
+            binary = convert_dna_to_binary(dna_code)
+            print(args.separator.join([binary[i:i+6] for i in range(0, len(binary), 6)]))
         else:
             dna_with_separator = args.separator.join([dna_code[i:i+3] for i in range(0, len(dna_code), 3)])
             print(dna_with_separator)
