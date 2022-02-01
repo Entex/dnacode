@@ -13,7 +13,7 @@ parser.add_argument("-s", "--separator", dest="separator", type=str, default=' '
 parser.add_argument("--force", dest="force", action="store_true", help="skip validation and try to force a result")
 
 parser.add_argument("message", nargs='?', type=str, help="Message used in encoding/decoding")
-parser.add_argument("message_stdin", nargs='?', type=argparse.FileType('r'), default=sys.stdin, help=argparse.SUPPRESS) 
+parser.add_argument("message_stdin", nargs='?', type=argparse.FileType('r'), default=sys.stdin, help=argparse.SUPPRESS)
 
 parser.add_argument('--version', action='version', version='DNA Code 1.1.1')
 
@@ -29,161 +29,71 @@ if not input_message or input_message == "":
     parser.print_help()
     exit(0)
 
+mapping_dna_to_6bit = {
+    'AAA': 'a', 'AAC': 'b', 'AAG': 'c', 'AAT': 'd', 'ACA': 'e', 'ACC': 'f',
+    'ACG': 'g', 'ACT': 'h', 'AGA': 'i', 'AGC': 'j', 'AGG': 'k', 'AGT': 'l',
+    'ATA': 'm', 'ATC': 'n', 'ATG': 'o', 'ATT': 'p', 'CAA': 'q', 'CAC': 'r',
+    'CAG': 's', 'CAT': 't', 'CCA': 'u', 'CCC': 'v', 'CCG': 'w', 'CCT': 'x',
+    'CGA': 'y', 'CGC': 'z', 'CGG': 'A', 'CGT': 'B', 'CTA': 'C', 'CTC': 'D',
+    'CTG': 'E', 'CTT': 'F', 'GAA': 'G', 'GAC': 'H', 'GAG': 'I', 'GAT': 'J',
+    'GCA': 'K', 'GCC': 'L', 'GCG': 'M', 'GCT': 'N', 'GGA': 'O', 'GGC': 'P',
+    'GGG': 'Q', 'GGT': 'R', 'GTA': 'S', 'GTC': 'T', 'GTG': 'U', 'GTT': 'V',
+    'TAA': 'W', 'TAC': 'X', 'TAG': 'Y', 'TAT': 'Z', 'TCA': '1', 'TCC': '2',
+    'TCG': '3', 'TCT': '4', 'TGA': '5', 'TGC': '6', 'TGG': '7', 'TGT': '8',
+    'TTA': '9', 'TTC': '0', 'TTG': ' ', 'TTT': '.'
+}
+
+mapping_6bit_to_dna = {
+    'a': 'AAA', 'b': 'AAC', 'c': 'AAG', 'd': 'AAT', 'e': 'ACA', 'f': 'ACC',
+    'g': 'ACG', 'h': 'ACT', 'i': 'AGA', 'j': 'AGC', 'k': 'AGG', 'l': 'AGT',
+    'm': 'ATA', 'n': 'ATC', 'o': 'ATG', 'p': 'ATT', 'q': 'CAA', 'r': 'CAC',
+    's': 'CAG', 't': 'CAT', 'u': 'CCA', 'v': 'CCC', 'w': 'CCG', 'x': 'CCT',
+    'y': 'CGA', 'z': 'CGC', 'A': 'CGG', 'B': 'CGT', 'C': 'CTA', 'D': 'CTC',
+    'E': 'CTG', 'F': 'CTT', 'G': 'GAA', 'H': 'GAC', 'I': 'GAG', 'J': 'GAT',
+    'K': 'GCA', 'L': 'GCC', 'M': 'GCG', 'N': 'GCT', 'O': 'GGA', 'P': 'GGC',
+    'Q': 'GGG', 'R': 'GGT', 'S': 'GTA', 'T': 'GTC', 'U': 'GTG', 'V': 'GTT',
+    'W': 'TAA', 'X': 'TAC', 'Y': 'TAG', 'Z': 'TAT', '1': 'TCA', '2': 'TCC',
+    '3': 'TCG', '4': 'TCT', '5': 'TGA', '6': 'TGC', '7': 'TGG', '8': 'TGT',
+    '9': 'TTA', '0': 'TTC', ' ': 'TTG', '.': 'TTT'
+}
+
+mapping_binary_to_dna = {
+    '00': 'A',
+    '01': 'G',
+    '10': 'C',
+    '11': 'T'
+}
+
+mapping_dna_to_binary = {
+    'A': '00',
+    'G': '01',
+    'C': '10',
+    'T': '11'
+}
+
 def convert_binary_to_dna(binary):
-    dna = ''
+    dna = []
     for bc in [binary[i:i+2] for i in range(0, len(binary), 2)]:
-        if bc == '00': dna += 'A'
-        elif bc == '01': dna += 'G'
-        elif bc == '10': dna += 'C'
-        elif bc == '11': dna += 'T'
-    return dna
-
-def convert_dna_to_6bit(dna_code):
-    message = ""
-    for dc in [dna_code[i:i+3] for i in range(0, len(dna_code), 3)]:
-        if dc == 'AAA': message += 'a'
-        elif dc == 'AAC': message += 'b'
-        elif dc == 'AAG': message += 'c'
-        elif dc == 'AAT': message += 'd'
-        elif dc == 'ACA': message += 'e'
-        elif dc == 'ACC': message += 'f'
-        elif dc == 'ACG': message += 'g'
-        elif dc == 'ACT': message += 'h'
-        elif dc == 'AGA': message += 'i'
-        elif dc == 'AGC': message += 'j'
-        elif dc == 'AGG': message += 'k'
-        elif dc == 'AGT': message += 'l'
-        elif dc == 'ATA': message += 'm'
-        elif dc == 'ATC': message += 'n'
-        elif dc == 'ATG': message += 'o'
-        elif dc == 'ATT': message += 'p'
-        elif dc == 'CAA': message += 'q'
-        elif dc == 'CAC': message += 'r'
-        elif dc == 'CAG': message += 's'
-        elif dc == 'CAT': message += 't'
-        elif dc == 'CCA': message += 'u'
-        elif dc == 'CCC': message += 'v'
-        elif dc == 'CCG': message += 'w'
-        elif dc == 'CCT': message += 'x'
-        elif dc == 'CGA': message += 'y'
-        elif dc == 'CGC': message += 'z'
-        elif dc == 'CGG': message += 'A'
-        elif dc == 'CGT': message += 'B'
-        elif dc == 'CTA': message += 'C'
-        elif dc == 'CTC': message += 'D'
-        elif dc == 'CTG': message += 'E'
-        elif dc == 'CTT': message += 'F'
-        elif dc == 'GAA': message += 'G'
-        elif dc == 'GAC': message += 'H'
-        elif dc == 'GAG': message += 'I'
-        elif dc == 'GAT': message += 'J'
-        elif dc == 'GCA': message += 'K'
-        elif dc == 'GCC': message += 'L'
-        elif dc == 'GCG': message += 'M'
-        elif dc == 'GCT': message += 'N'
-        elif dc == 'GGA': message += 'O'
-        elif dc == 'GGC': message += 'P'
-        elif dc == 'GGG': message += 'Q'
-        elif dc == 'GGT': message += 'R'
-        elif dc == 'GTA': message += 'S'
-        elif dc == 'GTC': message += 'T'
-        elif dc == 'GTG': message += 'U'
-        elif dc == 'GTT': message += 'V'
-        elif dc == 'TAA': message += 'W'
-        elif dc == 'TAC': message += 'X'
-        elif dc == 'TAG': message += 'Y'
-        elif dc == 'TAT': message += 'Z'
-        elif dc == 'TCA': message += '1'
-        elif dc == 'TCC': message += '2'
-        elif dc == 'TCG': message += '3'
-        elif dc == 'TCT': message += '4'
-        elif dc == 'TGA': message += '5'
-        elif dc == 'TGC': message += '6'
-        elif dc == 'TGG': message += '7'
-        elif dc == 'TGT': message += '8'
-        elif dc == 'TTA': message += '9'
-        elif dc == 'TTC': message += '0'
-        elif dc == 'TTG': message += ' '
-        elif dc == 'TTT': message += '.'
-    return message
-
-def convert_6bit_to_dna(message):
-    dna_code = ""
-    for char in message:
-        if char == 'a': dna_code += 'AAA'
-        elif char == 'b': dna_code += 'AAC'
-        elif char == 'c': dna_code += 'AAG'
-        elif char == 'd': dna_code += 'AAT'
-        elif char == 'e': dna_code += 'ACA'
-        elif char == 'f': dna_code += 'ACC'
-        elif char == 'g': dna_code += 'ACG'
-        elif char == 'h': dna_code += 'ACT'
-        elif char == 'i': dna_code += 'AGA'
-        elif char == 'j': dna_code += 'AGC'
-        elif char == 'k': dna_code += 'AGG'
-        elif char == 'l': dna_code += 'AGT'
-        elif char == 'm': dna_code += 'ATA'
-        elif char == 'n': dna_code += 'ATC'
-        elif char == 'o': dna_code += 'ATG'
-        elif char == 'p': dna_code += 'ATT'
-        elif char == 'q': dna_code += 'CAA'
-        elif char == 'r': dna_code += 'CAC'
-        elif char == 's': dna_code += 'CAG'
-        elif char == 't': dna_code += 'CAT'
-        elif char == 'u': dna_code += 'CCA'
-        elif char == 'v': dna_code += 'CCC'
-        elif char == 'w': dna_code += 'CCG'
-        elif char == 'x': dna_code += 'CCT'
-        elif char == 'y': dna_code += 'CGA'
-        elif char == 'z': dna_code += 'CGC'
-        elif char == 'A': dna_code += 'CGG'
-        elif char == 'B': dna_code += 'CGT'
-        elif char == 'C': dna_code += 'CTA'
-        elif char == 'D': dna_code += 'CTC'
-        elif char == 'E': dna_code += 'CTG'
-        elif char == 'F': dna_code += 'CTT'
-        elif char == 'G': dna_code += 'GAA'
-        elif char == 'H': dna_code += 'GAC'
-        elif char == 'I': dna_code += 'GAG'
-        elif char == 'J': dna_code += 'GAT'
-        elif char == 'K': dna_code += 'GCA'
-        elif char == 'L': dna_code += 'GCC'
-        elif char == 'M': dna_code += 'GCG'
-        elif char == 'N': dna_code += 'GCT'
-        elif char == 'O': dna_code += 'GGA'
-        elif char == 'P': dna_code += 'GGC'
-        elif char == 'Q': dna_code += 'GGG'
-        elif char == 'R': dna_code += 'GGT'
-        elif char == 'S': dna_code += 'GTA'
-        elif char == 'T': dna_code += 'GTC'
-        elif char == 'U': dna_code += 'GTG'
-        elif char == 'V': dna_code += 'GTT'
-        elif char == 'W': dna_code += 'TAA'
-        elif char == 'X': dna_code += 'TAC'
-        elif char == 'Y': dna_code += 'TAG'
-        elif char == 'Z': dna_code += 'TAT'
-        elif char == '1': dna_code += 'TCA'
-        elif char == '2': dna_code += 'TCC'
-        elif char == '3': dna_code += 'TCG'
-        elif char == '4': dna_code += 'TCT'
-        elif char == '5': dna_code += 'TGA'
-        elif char == '6': dna_code += 'TGC'
-        elif char == '7': dna_code += 'TGG'
-        elif char == '8': dna_code += 'TGT'
-        elif char == '9': dna_code += 'TTA'
-        elif char == '0': dna_code += 'TTC'
-        elif char == ' ': dna_code += 'TTG'
-        elif char == '.': dna_code += 'TTT'
-    return dna_code
+        dna.append(mapping_binary_to_dna[bc])
+    return ''.join(dna)
 
 def convert_dna_to_binary(dna_code):
-    binary = ''
+    binary = []
     for char in dna_code:
-        if char == 'A': binary += '00'
-        elif char == 'G': binary += '01'
-        elif char == 'C': binary += '10'
-        elif char == 'T': binary += '11'
-    return binary
+        binary.append(mapping_dna_to_binary[char])
+    return ''.join(binary)
+
+def convert_dna_to_6bit(dna_code):
+    message = []
+    for dc in [dna_code[i:i+3] for i in range(0, len(dna_code), 3)]:
+        message.append(mapping_dna_to_6bit[dc])
+    return ''.join(message)
+
+def convert_6bit_to_dna(message):
+    dna_code = []
+    for char in message:
+        dna_code.append(mapping_6bit_to_dna[char])
+    return ''.join(dna_code)
 
 def convert_ascii_to_binary(message):
     return ''.join([bin(ord(char))[2:].zfill(8) for char in message])
@@ -193,8 +103,8 @@ def convert_binary_to_ascii(binary):
 
 if(args.decode):
     input_message = input_message.replace(args.separator, '')
-    
-    # Check if binary
+
+    # Check if we are decoding a binary
     pattern = r'[01]'
     if(args.binary or re.search(pattern, input_message)):
         pattern=r'[^01]'
@@ -206,12 +116,15 @@ if(args.decode):
             # Invalid binary length
             sys.stderr.write("Invalid binary, odd number of digits: " + input_message)
             exit(-2)
-        
+
         # decode binary to DNA code
         input_message = convert_binary_to_dna(input_message)
 
-    pattern=r'[^ACGTacgt]'
+    # Remove separator and uppercase everything before decoding
     dna_code = input_message.replace(args.separator, '').upper()
+
+    # Validate DNA string
+    pattern=r'[^ACGTacgt]'
     if(not args.force and re.search(pattern, dna_code)):
         # Invalid DNA code
         sys.stderr.write("Invalid DNA string: " + dna_code)
@@ -224,13 +137,16 @@ if(args.decode):
         # Invalid DNA code length (ext-ascii)
         sys.stderr.write("Invalid DNA string: " + dna_code)
         exit(-8)
-    
+
+    # Decode and print
     if(args.ascii):
         print(convert_binary_to_ascii(convert_dna_to_binary(dna_code)))
     else:
         print(convert_dna_to_6bit(dna_code))
 else:
     if(args.ascii):
+
+        # Check if message contains bad characters
         pattern = r'[^\x00-\xFF]'
         if(not args.force and re.search(pattern, input_message)):
             # Invalid characters
@@ -239,17 +155,22 @@ else:
         if(args.binary):
             print(convert_ascii_to_binary(input_message))
         else:
+            # Encode and print
             binary = convert_ascii_to_binary(input_message)
             dna = convert_binary_to_dna(binary)
             dna_with_separator = args.separator.join([dna[i:i+4] for i in range(0, len(dna), 4)])
-            
+
             print(dna_with_separator)
     else:
+
+        #Check if message contains bad characters
         pattern = r'[^a-zA-Z0-9 .]'
         if(not args.force and re.search(pattern, input_message)):
             # Invalid characters
             sys.stderr.write("Invalid message: May only contain [a-zA-Z0-9 .], use --ascii if you need more characters")
             exit(-6)
+
+        # Encode and print
         dna_code = convert_6bit_to_dna(input_message)
         if(args.binary):
             print(convert_dna_to_binary(dna_code))
