@@ -5,24 +5,40 @@ Simple program to encode text to a DNA string and vice versa.
 ## Disclaimer
 This is not a DNA/RNA Sequence translator of nucleotide to protein sequences or any of the sorts. This program only encodes (and decodes) text into DNA-like sequences.
 
+## Installation
+Requires Python 3.10+. No dependencies.
+
+```bash
+pipx install .   # or: uv tool install .
+```
+
+This installs a `dnacode` command. You can also run the script directly with `python3 dnacode.py`.
+
 ## Usage
 ```
-usage: dnacode [-h] [-a] [-d] [-b] [-s SEPARATOR] [--remap-agct AGCT] [--remap-6bit MAP6BIT] [--force] [--version] [message]
+usage: dnacode [-h] [-a] [-d] [-b] [-s SEPARATOR] [--remap-agct AGCT]
+               [--remap-6bit CHARSET] [--force] [--version]
+               [message]
 
 DNA Code encoder/decoder
 
 positional arguments:
-  message               Message used in encoding/decoding
+  message               Message used in encoding/decoding (read from stdin if
+                        omitted)
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
-  -a, --ascii           use extended ascii representation instead of 6-bit [a-zA-Z0-9 .]
+  -a, --ascii           use extended ascii representation instead of 6-bit
+                        [a-zA-Z0-9 .]
   -d, --decode          Decode message instead of encode
-  -b, --binary          Encode/decode from or to binary (auto detect in decode mode)
-  -s SEPARATOR, --separator SEPARATOR
+  -b, --binary          Encode/decode from or to binary (auto detect in decode
+                        mode)
+  -s, --separator SEPARATOR
                         Set separator, DEFAULT=' ' (space)
-  --remap-agct AGCT     Remap the binary representation of A, G, C and T. Example input 01101100. (only works with -b)
-  --remap-6bit MAP6BIT  Remap 6bit represenation with another characterset (64 characters). (only works with 6bit)
+  --remap-agct AGCT     Remap the binary representation of A, G, C and T.
+                        Example input 01101100.
+  --remap-6bit CHARSET  Remap 6-bit representation with another characterset
+                        (64 characters). (only works with 6-bit)
   --force               skip validation and try to force a result
   --version             show program's version number and exit
 ```
@@ -106,4 +122,10 @@ cat test.txt | python3 dnacode.py | python3 dnacode.py -d
 
 output:
 Hello pipes
+```
+
+## Development
+Run the tests:
+```bash
+python3 -m unittest discover tests
 ```

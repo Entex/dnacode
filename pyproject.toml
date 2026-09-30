@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dnacode"
+dynamic = ["version"]
+description = "Encode text to DNA-like sequences and back"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Robin Jakobsson" }]
+
+[project.scripts]
+dnacode = "dnacode:main"
+
+[tool.setuptools]
+py-modules = ["dnacode"]
+
+[tool.setuptools.dynamic]
+version = { attr = "dnacode.__version__" }
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
